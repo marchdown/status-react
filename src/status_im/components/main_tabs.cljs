@@ -25,21 +25,24 @@
             [cljs.core.async :as a]))
 
 (def tab-list
-  [{:view-id :chat-list
-    :title   (label :t/chats)
-    :screen  chats-list
-    :icon    :icon_tab_chats
-    :index   0}
-   {:view-id :discover
-    :title   (label :t/discover)
-    :screen  discover
-    :icon    :icon_tab_discover
-    :index   1}
-   {:view-id :contact-list
-    :title   (label :t/contacts)
-    :screen  contact-list
-    :icon    :icon_tab_contacts
-    :index   2}])
+  [{:view-id       :chat-list
+    :title         (label :t/chats)
+    :screen        chats-list
+    :icon-inactive :icon-chats
+    :icon-active   :icon_chats-active
+    :index         0}
+   {:view-id       :discover
+    :title         (label :t/discover)
+    :screen        discover
+    :icon-inactive :icon-discover
+    :icon-active   :icon_discover-active
+    :index         1}
+   {:view-id       :contact-list
+    :title         (label :t/contacts)
+    :screen        contact-list
+    :icon-inactive :icon-contacts
+    :icon-active   :icon_contacts-active
+    :index         2}])
 
 (defn animation-logic [{:keys [offsets val tab-id to-tab-id]}]
   (fn [_]
@@ -96,12 +99,14 @@
     (recur (a/<! scroll-start))))
 
 (defn main-tabs []
-  (let [view-id      (subscribe [:get :view-id])
-        prev-view-id (subscribe [:get :prev-view-id])
-        main-swiper  (r/atom nil)
-        swiped?      (r/atom false)
-        scroll-start (a/chan 10)
-        scroll-ended (a/chan 10)]
+  (let [view-id           (subscribe [:get :view-id])
+        prev-view-id      (subscribe [:get :prev-view-id])
+        tabs-hidden?      (subscribe [:tabs-hidden?])
+        main-swiper       (r/atom nil)
+        swiped?           (r/atom false)
+        scroll-start      (a/chan 10)
+        scroll-ended      (a/chan 10)
+        tabs-were-hidden? (atom @tabs-hidden?)]
     (r/create-class
       {:component-did-mount
        #(start-scrolling-loop scroll-start scroll-ended)
@@ -109,9 +114,10 @@
        (fn []
          (if @swiped?
            (reset! swiped? false)
-           (when @main-swiper
+           (when (and (= @tabs-were-hidden? @tabs-hidden?) @main-swiper)
              (let [to (scroll-to @prev-view-id @view-id)]
-               (a/put! scroll-start [@main-swiper to])))))
+               (a/put! scroll-start [@main-swiper to]))))
+         (reset! tabs-were-hidden? @tabs-hidden?))
        :reagent-render
        (fn []
          [view common-st/flex
@@ -120,7 +126,7 @@
            [drawer-view
             [view {:style common-st/flex}
              [swiper (merge
-                       st/main-swiper
+                      (st/main-swiper @tabs-hidden?)
                        {:index                  (get-tab-index @view-id)
                         :loop                   false
                         :ref                    #(reset! main-swiper %)
@@ -131,4 +137,5 @@
              [tabs {:selected-view-id @view-id
                     :prev-view-id     @prev-view-id
                     :tab-list         tab-list}]
-             [bottom-shadow-view]]]]])})))
+             (when-not @tabs-hidden?
+               [bottom-shadow-view])]]]])})))
