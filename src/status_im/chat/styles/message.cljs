@@ -5,7 +5,8 @@
                                                  selected-message-color
                                                  text1-color
                                                  text2-color
-                                                 color-gray]]
+                                                 color-gray
+                                                 color-gray4]]
             [status-im.constants :refer [text-content-type
                                          content-type-command]]))
 
@@ -91,7 +92,8 @@
 
 (def delivery-view
   {:flexDirection :row
-   :marginTop     2})
+   :marginTop     2
+   :opacity       0.5})
 
 (def delivery-image
   {:marginTop 6
@@ -99,8 +101,8 @@
    :height    7})
 
 (def delivery-text
-  {:fontSize   12
-   :color      text2-color
+  {:fontSize   13
+   :color      color-gray4
    :marginLeft 5})
 
 (defn text-message
