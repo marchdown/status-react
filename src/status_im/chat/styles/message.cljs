@@ -115,7 +115,8 @@
             :paddingBottom 14})))
 
 (def author
-  {:color color-gray})
+  {:font-size 13
+   :color color-gray4})
 
 (def comand-request-view
   {:paddingRight 16})

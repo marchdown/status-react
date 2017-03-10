@@ -41,6 +41,12 @@
 
 (def window-width (:width (get-dimensions "window")))
 
+(defview message-author-name [{:keys [outgoing from] :as message}]
+  [current-account [:get-current-account]
+   incoming-name [:contact-name-by-identity from]]
+  (let [name (if outgoing (:name current-account) incoming-name)]
+    [text {:style st/author} name]))
+
 (defn message-content-status [_]
   (let [{:keys [chat-id group-chat name color]} (subscribe [:chat-properties [:chat-id :group-chat :name :color]])
         members (subscribe [:current-chat-contacts])]
@@ -143,10 +149,9 @@
                        :current-chat-id current-chat-id}]]))
 
 (defn message-view
-  [{:keys [username same-author index] :as message} content]
+  [{:keys [same-author index] :as message} content]
   [view (st/message-view message)
-   (when (and username (or (= 1 index) (not same-author)))
-     [text {:style st/author} username])
+   [message-author-name message]
    content])
 
 (def replacements
