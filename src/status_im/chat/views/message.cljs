@@ -106,11 +106,8 @@
 (defn command-preview
   [{:keys [params preview content-type] :as message}]
   (cond
-    (wallet-command? content-type)
-    (wallet-command-preview message)
-
-    preview preview
-
+    (wallet-command? content-type) (wallet-command-preview message)
+    preview                        preview
     :else
     [text {:style st/command-text
            :font  :default}
@@ -128,17 +125,8 @@
    contact-chat [:get-in [:chats (if outgoing to from)]]
    preview [:get-in [:message-data :preview message-id]]]
   (let [{:keys [command params]} (parse-command-message-content commands content)
-        {:keys     [name type]
-         icon-path :icon} command]
+        {:keys [name type]} command]
     [view st/content-command-view
-     [view st/command-container
-      [view (pill-st/pill command)
-       [text {:style pill-st/pill-text
-              :font  :default}
-        (str (if (= :command type) chat-consts/command-char "?") name)]]]
-     (when icon-path
-       [view st/command-image-view
-        [icon icon-path st/command-image]])
      [command-preview {:command         (:name command)
                        :content-type    content-type
                        :params          params

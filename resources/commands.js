@@ -671,24 +671,26 @@ status.command({
         var text = status.components.text(
             {
                 style: {
-                    marginTop: 5,
+                    width: 200,
+                    marginTop: 6,
+                    marginBottom: 12,
                     marginHorizontal: 0,
-                    fontSize: 14,
+                    fontSize: 15,
                     fontFamily: "font",
                     color: "black"
                 }
             }, params.address);
         var uri = "https://maps.googleapis.com/maps/api/staticmap?center="
             + params.address
-            + "&size=100x100&maptype=roadmap&key=AIzaSyBNsj1qoQEYPb3IllmWMAscuXW0eeuYqAA&language=en"
-            + "&markers=size:mid%7Ccolor:0xff0000%7Clabel:%7C"
+            + "&size=200x100&maptype=roadmap&key=AIzaSyBNsj1qoQEYPb3IllmWMAscuXW0eeuYqAA&language=en"
+            + "&markers=size:mid%7Ccolor:blue%7Clabel:%7C"
             + params.address;
 
         var image = status.components.image(
             {
                 source: {uri: uri},
                 style: {
-                    width: 100,
+                    width: 200,
                     height: 100
                 }
             }

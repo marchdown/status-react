@@ -170,6 +170,7 @@
 
 (def command-container
   {:flexDirection :row
+   :margin-top    4
    :marginRight   32})
 
 (def command-image
