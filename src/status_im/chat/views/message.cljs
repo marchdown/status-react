@@ -149,17 +149,6 @@
      [text {:style st/author} username])
    content])
 
-(defmulti message-content (fn [_ message _]
-                            (message :content-type)))
-
-(defmethod message-content content-type-command-request
-  [wrapper message]
-  [wrapper message [message-content-command-request message]])
-
-(defmethod message-content c/content-type-wallet-request
-  [wrapper message]
-  [wrapper message [message-content-command-request message]])
-
 (def replacements
   {"\\*[^*]+\\*" {:font-weight :bold}
    "~[^~]+~"     {:font-style :italic}})
@@ -211,6 +200,16 @@
        [text {:style (st/text-message message)
               :font  :default}
         (parse-text content)]))])
+
+(defmulti message-content (fn [_ message _] (message :content-type)))
+
+(defmethod message-content content-type-command-request
+  [wrapper message]
+  [wrapper message [message-content-command-request message]])
+
+(defmethod message-content c/content-type-wallet-request
+  [wrapper message]
+  [wrapper message [message-content-command-request message]])
 
 (defmethod message-content text-content-type
   [wrapper message]
