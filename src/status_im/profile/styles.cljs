@@ -1,168 +1,159 @@
 (ns status-im.profile.styles
   (:require [status-im.components.styles :refer [color-white
-                                                 color-gray
-                                                 color-black
-                                                 color-blue
-                                                 color-blue-transparent
-                                                 text1-color
-                                                 text1-disabled-color
-                                                 text2-color
-                                                 color-red
-                                                 separator-color]]
+                                                 color-gray4
+                                                 color-gray5
+                                                 color-light-gray
+                                                 color-light-blue
+                                                 color-light-blue-transparent
+                                                 text1-color]]
             [status-im.utils.platform :as p]))
+
+(defn ps-profile [item]
+  (get-in p/platform-specific [:component-styles :profile item]))
 
 (def profile
   {:flex             1
-   :background-color color-white
+   :background-color color-light-gray
    :flex-direction   :column})
 
-(def back-btn-touchable
-  {:position :absolute})
+(def profile-form
+  {:background-color color-white
+   :padding-bottom   16})
 
-(def back-btn-container
-  {:width  46
-   :height 56
-   :align-items     :center
-   :justify-content :center})
+(def my-profile-form
+  {:background-color color-white
+   :padding-bottom   24})
 
-(def back-btn-icon
-  {:width       8
-   :height      14})
+(def edit-my-profile-form
+  {:background-color color-white
+   :flex             1})
 
-(def actions-btn-touchable
-  {:position :absolute
-   :right    0})
+(def profile-info-container
+  (merge {:background-color color-white}
+         (if p/ios?
+           {:margin-top 16}
+           {:margin-top 12})))
 
-(def actions-btn-container
-  {:width           56
-   :height          56
-   :align-items     :center
-   :justify-content :center})
+(def profile-actions-container
+  (when-not p/ios?
+    {:padding-top    8
+     :padding-bottom 8}))
 
-(def edit-btn-icon
-  {:width  4
-   :height 16})
+(def profile-bage
+  (merge (ps-profile :profile-bage)
+         {:align-items :center}))
 
-(defn ok-btn-icon [enabled?]
-  {:font-size 22
-   :color     (if enabled? color-black color-gray)})
+(def edit-profile-bage
+  {:flex-direction :row
+   :align-items    :center
+   :padding-left   24
+   :padding-top    25})
 
-(def user-photo-container
-  {:margin-top 22})
+(def profile-name-container
+  {:margin-top 12})
 
-(def username-wrapper
-  {:width         300
-   :margin-top    (if p/ios? -18 -22)
-   :margin-bottom -16})
-
-(defn username-input [edit? valid?]
-  {:font-size  18
-   :text-align :center
-   :color      (if edit?
-                 (if valid? text1-color color-red)
-                 text1-disabled-color)})
-
-(def status-block
-  {:flex-direction "column"
-   :align-items    "center"
-   :justifyContent "center"
-   :margin-left    55
-   :margin-right   55})
-
-(defn status-view [height]
-  {:align-self "stretch"
-   :font-size  14
-   :min-height height
-   :text-align "center"
-   :color      text2-color})
-
-(defn status-input [height]
-  (merge (status-view height)
-         {:margin-left  (if p/ios? 21 16)
-          :margin-right 16
-          :margin-top   (if p/ios? 6 1)}))
-
-(defn status-text [height]
-  (merge (status-view (- height (if p/ios? 5 10)))
-         {:margin-left   18
-          :margin-right  18
-          :margin-top    11
-          :margin-bottom 0}))
-
-(def btns-container
-  {:margin-top     0
-   :flex-direction :row})
-
-(def message-btn
-  {:height           40
-   :justify-content  :center
-   :background-color color-blue
-   :padding-left     25
-   :padding-right    25
-   :border-radius    20})
-
-(def message-btn-text
-  {:margin-top -2.5
-   :font-size  14
-   :color      color-white})
-
-(def more-btn
-  {:margin-left      10
-   :width            40
-   :height           40
-   :align-items      :center
-   :justify-content  :center
-   :background-color color-blue-transparent
-   :padding          8
-   :border-radius    20})
-
-(def more-btn-image
-  {:width  4
-   :height 16})
-
-(def profile-properties-container
-  {:align-items    :stretch
-   :flex-firection :column
-   :margin-top     16})
-
-(def my-profile-properties-container
-  {:align-items    :stretch
-   :flex-firection :column
-   :margin-top     32})
-
-(def profile-property
-  {:margin-left 16})
-
-(def profile-property-with-top-spacing
-  {:margin-top  32
-   :margin-left 16})
-
-(def profile-property-row
-  {:flex           1
-   :flex-direction :row})
-
-(def profile-property-field
-  {:margin-right 96
+(def edit-profile-name-container
+  {:padding-left 32
    :flex         1})
 
-(def report-user-text
-  {:font-size      14
-   :line-height    21
-   :color          text2-color
-   ;; IOS:
-   :letter-spacing 0.5})
+(def edit-name-title
+  (merge (ps-profile :edit-name-title)
+         {:color color-gray4}))
 
-(def qr-code
-  {:width            250
-   :height           250
-   :background-color "white"
+(def edit-status-title
+  edit-name-title)
+
+(def profile-name-text
+  (ps-profile :profile-name-text))
+
+(def profile-status-container
+  {:margin-top 4})
+
+(def profile-status-text
+  (merge (ps-profile :profile-status-text)
+         {:color color-gray4}))
+
+(def profile-setting-item
+  (merge (ps-profile :profile-setting-item)
+         {:flex-direction :row
+          :align-items    :center}))
+
+(def profile-setting-text-container
+  {:flex          1
+   :padding-right 20})
+
+(def profile-setting-title
+  (merge (ps-profile :profile-setting-title)
+         {:color color-gray4}))
+
+(def profile-setting-text
+  (ps-profile :profile-setting-text))
+
+(def profile-setting-spacing
+  (ps-profile :profile-setting-spacing))
+
+(def add-to-contacts
+  {:margin-top       24
+   :margin-left      16
+   :margin-right     16
+   :background-color color-light-blue
    :border-radius    4
-   :align-items      :center
-   :padding-top      15
-   :elevation        4})
+   :height           52
+   :align-items     :center
+   :justify-content :center})
 
-(def underline-container
-  {:background-color separator-color
-   :margin-bottom    18
-   :height           1
-   :align-items      :center})
+(def in-contacts
+  (merge add-to-contacts
+         {:flex-direction  :row
+          :padding-right   40
+          :padding-left    16
+          :justify-content :flex-start
+          :background-color color-light-blue-transparent}))
+
+(def in-contacts-inner
+  {:align-items :center
+   :flex        1})
+
+(def add-to-contacts-text
+  (merge (ps-profile :add-to-contacts-text)
+         {:color color-white}))
+
+(def in-contacts-text
+  (merge add-to-contacts-text
+         {:color color-light-blue}))
+
+(def info-item-separator
+  {:margin-left      16})
+
+(def form-separator
+  (merge (ps-profile :form-separator)
+         {:height           1
+          :background-color color-gray5
+          :opacity          0.5}))
+
+(def profile-name-wrapper
+  {:padding-top    0
+   :height         40
+   :padding-bottom 0})
+
+(def profile-focus-line-color
+  color-light-blue)
+
+(def profile-focus-line-height
+  (get-in p/platform-specific [:component-styles :text-field-focus-line-height]))
+
+(def profile-name-input
+  {:font-size      17
+   :letter-spacing -0.2
+   :color          text1-color})
+
+(def profile-status-input
+  (merge profile-name-input
+         {:height 75}))
+
+(def edit-profile-status
+  {:padding-top  35
+   :padding-left 16})
+
+(def edit-profile-status-text-container
+  {:padding-top 8})
