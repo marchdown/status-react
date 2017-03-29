@@ -15,7 +15,7 @@
    :invite-friends                        "Invite friends"
    :faq                                   "FAQ"
    :switch-users                          "Switch users"
-   :feedback                              "Got Feedback?\nShake your phone!"
+   :feedback                              "Got feedback?\nShake your phone!"
 
    ;chat
    :is-typing                             "is typing"
@@ -51,6 +51,7 @@
    :status-failed                         "Failed"
 
    ;datetime
+   :datetime-ago-format                   "{{number}} {{time-intervals}} {{ago}}"
    :datetime-second                       {:one   "second"
                                            :other "seconds"}
    :datetime-minute                       {:one   "minute"
@@ -70,7 +71,7 @@
    :message                               "Message"
    :username                              "Username"
    :not-specified                         "Not specified"
-   :public-key                            "Public Key"
+   :public-key                            "Public key"
    :phone-number                          "Phone number"
    :email                                 "Email"
    :profile-no-status                     "No status"
